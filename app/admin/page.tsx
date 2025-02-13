@@ -1,19 +1,31 @@
 'use client'
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
-interface FormData {
-  question: string;
-  answer: string;
+interface AdminLayout {
+    question: string;
+    answer: string;
 }
 
 const AdminLayout: React.FC = () => {
+const [questions, setQuestions] = useState<AdminLayout[]>([]);
 
+const { register, handleSubmit, formState: { errors } } = useForm<AdminLayout>();
 
-  const {register,handleSubmit,formState: { errors },} = useForm();
+  const onSubmit: SubmitHandler<AdminLayout> = (data: AdminLayout) => {
+    setQuestions((prev) => [...prev, { question: data.question, answer: data.answer}]);
+  };
+  
+  useEffect(
+    () => {
+      console.log(questions)
+    },
+    [questions]
+  )
 
   return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
+    <>
+    <form onSubmit = {handleSubmit(onSubmit)}>
       <div>
         <label htmlFor="question">Question:</label>
         <input
@@ -32,6 +44,8 @@ const AdminLayout: React.FC = () => {
       </div>
       <button type="submit">Submit</button>
     </form>
+    
+    </>
   );
 };
 
