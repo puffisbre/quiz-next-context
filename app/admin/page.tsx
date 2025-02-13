@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { QuizContext } from "../context/QuizContext";
 import Link from "next/link";
@@ -12,25 +12,20 @@ interface AdminLayout {
 const AdminLayout: React.FC = () => {
   const context = useContext(QuizContext);
 
-  const questions = context?.questions ?? [];
-  const setQuestions = context?.setQuestions ?? (() => {});
+  if (!context) {
+    throw new Error("QuizContext must be used within a QuizProvider");
+  }
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<AdminLayout>();
+  const { setQuestions } = context;
+
+  const { register, handleSubmit } = useForm<AdminLayout>();
 
   const onSubmit: SubmitHandler<AdminLayout> = (data: AdminLayout) => {
-    setQuestions((prev: any) => [
+    setQuestions((prev: AdminLayout[]) => [
       ...prev,
       { question: data.question, answer: data.answer },
     ]);
   };
-
-  useEffect(() => {
-    console.log(questions);
-  }, [questions]);
 
   return (
     <>

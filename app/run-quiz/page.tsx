@@ -1,25 +1,35 @@
-'use client'
+"use client";
 
 import { QuizContext } from "../context/QuizContext";
-import React, { useContext, useEffect } from "react";
-
+import React, { useContext, useState } from "react";
 
 export default function RunQuiz() {
+  const [showQuestion, setShowQuestion] = useState(0);
   const context = useContext(QuizContext);
-    const questions = context?.questions ?? [];
-  //  const setQuestions = context?.setQuestions ?? (() => {});
-  useEffect(() => {
-    console.log(questions);
-  }, [questions]);
+
+  if (!context) {
+    throw new Error("QuizContext must be used within a QuizProvider");
+  }
+
+  const { questions } = context;
+
+  function nextQuestion() {
+    setShowQuestion((prev) => prev + 1);
+  }
   return (
-  <>
-  <div>
-        {questions.map((q, index) => (
-          <div key={index}>
-            <p>Question: {q.question}</p>
-            <p>Answer: {q.answer}</p>
-          </div>
-        ))}
+    <>
+      <div>
+        <div>
+          Question:{" "}
+          {showQuestion >= questions.length ? (
+            <p> No more questions</p>
+          ) : (
+            <p>{questions[showQuestion].question}</p>
+          )}
+          <button onClick={nextQuestion}></button>
+          <input />
+        </div>
       </div>
-  </>);
+    </>
+  );
 }
