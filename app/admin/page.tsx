@@ -9,7 +9,6 @@ interface AdminLayout {
 }
 
 const AdminLayout: React.FC = () => {
-  /* const [questions, setQuestions] = useState<AdminLayout[]>([]); */
   const context = useContext(QuizContext);
 
   const questions = context?.questions ?? [];
@@ -18,12 +17,11 @@ const AdminLayout: React.FC = () => {
   const {
     register,
     handleSubmit,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     formState: { errors },
   } = useForm<AdminLayout>();
 
   const onSubmit: SubmitHandler<AdminLayout> = (data: AdminLayout) => {
-    setQuestions((prev) => [
+    setQuestions((prev: any) => [
       ...prev,
       { question: data.question, answer: data.answer },
     ]);
