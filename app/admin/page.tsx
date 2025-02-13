@@ -2,6 +2,7 @@
 import React, { useContext, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { QuizContext } from "../context/QuizContext";
+import Link from "next/link";
 
 interface AdminLayout {
   question: string;
@@ -44,6 +45,7 @@ const AdminLayout: React.FC = () => {
         </div>
         <button type="submit">Submit</button>
       </form>
+      <Link href="/run-quiz"> go here </Link>
     </>
   );
 };
